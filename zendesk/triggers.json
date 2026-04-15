@@ -1,0 +1,156 @@
+{
+  "triggers": [
+    {
+      "title": "Route — Login & Access Issues (Priority)",
+      "active": true,
+      "conditions": {
+        "all": [
+          { "field": "status", "operator": "is", "value": "new" }
+        ],
+        "any": [
+          { "field": "subject", "operator": "contains", "value": "locked out" },
+          { "field": "subject", "operator": "contains", "value": "can't login" },
+          { "field": "subject", "operator": "contains", "value": "cannot login" },
+          { "field": "subject", "operator": "contains", "value": "access denied" },
+          { "field": "subject", "operator": "contains", "value": "password reset" },
+          { "field": "subject", "operator": "contains", "value": "forgot password" }
+        ]
+      },
+      "actions": [
+        { "field": "group_id", "value": "TIER_1_PRIORITY_GROUP_ID" },
+        { "field": "priority", "value": "high" },
+        { "field": "tags", "value": "login_issue access_blocked" },
+        {
+          "field": "notification_target",
+          "value": "Notify T1 Priority Queue",
+          "subject": "Priority: Login issue — {{ticket.requester.name}}",
+          "body": "New priority ticket from {{ticket.requester.email}}:\n{{ticket.title}}"
+        }
+      ]
+    },
+    {
+      "title": "Route — Billing & Payments",
+      "active": true,
+      "conditions": {
+        "all": [
+          { "field": "status", "operator": "is", "value": "new" }
+        ],
+        "any": [
+          { "field": "subject", "operator": "contains", "value": "charged" },
+          { "field": "subject", "operator": "contains", "value": "refund" },
+          { "field": "subject", "operator": "contains", "value": "invoice" },
+          { "field": "subject", "operator": "contains", "value": "billing" },
+          { "field": "subject", "operator": "contains", "value": "payment" },
+          { "field": "subject", "operator": "contains", "value": "subscription" }
+        ]
+      },
+      "actions": [
+        { "field": "group_id", "value": "BILLING_GROUP_ID" },
+        { "field": "priority", "value": "normal" },
+        { "field": "tags", "value": "billing payment" }
+      ]
+    },
+    {
+      "title": "Route — API & Technical Integration (Tier 2)",
+      "active": true,
+      "conditions": {
+        "all": [
+          { "field": "status", "operator": "is", "value": "new" }
+        ],
+        "any": [
+          { "field": "subject", "operator": "contains", "value": "API" },
+          { "field": "subject", "operator": "contains", "value": "webhook" },
+          { "field": "subject", "operator": "contains", "value": "integration" },
+          { "field": "subject", "operator": "contains", "value": "error 500" },
+          { "field": "subject", "operator": "contains", "value": "not syncing" },
+          { "field": "description", "operator": "contains", "value": "API key" }
+        ]
+      },
+      "actions": [
+        { "field": "group_id", "value": "TIER_2_TECHNICAL_GROUP_ID" },
+        { "field": "priority", "value": "high" },
+        { "field": "tags", "value": "technical api integration tier2" }
+      ]
+    },
+    {
+      "title": "Route — Enterprise/VIP Clients",
+      "active": true,
+      "conditions": {
+        "all": [
+          { "field": "status", "operator": "is", "value": "new" },
+          { "field": "organization.tags", "operator": "includes", "value": "enterprise" }
+        ]
+      },
+      "actions": [
+        { "field": "group_id", "value": "VIP_QUEUE_GROUP_ID" },
+        { "field": "priority", "value": "urgent" },
+        { "field": "tags", "value": "vip enterprise" }
+      ]
+    },
+    {
+      "title": "Route — Feature Requests to Product Queue",
+      "active": true,
+      "conditions": {
+        "all": [
+          { "field": "status", "operator": "is", "value": "new" }
+        ],
+        "any": [
+          { "field": "subject", "operator": "contains", "value": "feature request" },
+          { "field": "subject", "operator": "contains", "value": "suggestion" },
+          { "field": "subject", "operator": "contains", "value": "when will you" },
+          { "field": "subject", "operator": "contains", "value": "would be great if" },
+          { "field": "subject", "operator": "contains", "value": "roadmap" }
+        ]
+      },
+      "actions": [
+        { "field": "group_id", "value": "PRODUCT_FEEDBACK_GROUP_ID" },
+        { "field": "priority", "value": "low" },
+        { "field": "tags", "value": "feature_request product_feedback" }
+      ]
+    },
+    {
+      "title": "Auto-reply — KB Deflection for How-To Questions",
+      "active": true,
+      "conditions": {
+        "all": [
+          { "field": "status", "operator": "is", "value": "new" }
+        ],
+        "any": [
+          { "field": "subject", "operator": "contains", "value": "how do i" },
+          { "field": "subject", "operator": "contains", "value": "how to" },
+          { "field": "subject", "operator": "contains", "value": "where can i find" },
+          { "field": "subject", "operator": "contains", "value": "is it possible to" }
+        ]
+      },
+      "actions": [
+        { "field": "tags", "value": "kb_deflect_candidate" },
+        {
+          "field": "notification_user",
+          "value": "requester",
+          "subject": "Re: {{ticket.title}} — Quick answer",
+          "body": "Hi {{ticket.requester.first_name}},\n\nThanks for reaching out! Our Help Centre might have exactly what you need:\n\n→ {{help_centre_url}}\n\nIf you can't find the answer there, a support agent will follow up within 4 hours.\n\nBest,\nSupport Team"
+        }
+      ]
+    },
+    {
+      "title": "SLA Warning — Ticket approaching breach",
+      "active": true,
+      "conditions": {
+        "all": [
+          { "field": "status", "operator": "is", "value": "open" },
+          { "field": "hours_since_update", "operator": "greater_than", "value": "6" },
+          { "field": "priority", "operator": "is", "value": "high" }
+        ]
+      },
+      "actions": [
+        { "field": "tags", "value": "sla_warning" },
+        {
+          "field": "notification_target",
+          "value": "Slack SLA Alerts",
+          "subject": "SLA Warning: #{{ticket.id}} — {{ticket.title}}",
+          "body": "Ticket #{{ticket.id}} is approaching SLA breach.\nAssigned to: {{ticket.assignee.name}}\nRequester: {{ticket.requester.email}}"
+        }
+      ]
+    }
+  ]
+}

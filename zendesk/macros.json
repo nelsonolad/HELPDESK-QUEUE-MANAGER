@@ -1,0 +1,90 @@
+{
+  "macros": [
+    {
+      "title": "Login Issue — Password Reset Instructions",
+      "active": true,
+      "actions": [
+        {
+          "field": "comment_value",
+          "value": "Hi {{ticket.requester.first_name}},\n\nThanks for reaching out. Here's how to reset your password:\n\n1. Go to {{app_login_url}}\n2. Click **Forgot password?** below the login form\n3. Enter your email address: {{ticket.requester.email}}\n4. Check your inbox for a reset link — it arrives within 2 minutes\n5. The link expires after 60 minutes\n\nIf the email doesn't arrive, check your spam folder. If you still don't see it after 5 minutes, reply here and I'll reset it manually from our end.\n\nBest,\n{{current_user.first_name}}\nSupport Team"
+        },
+        { "field": "status", "value": "pending" },
+        { "field": "tags", "value": "login_issue password_reset" }
+      ]
+    },
+    {
+      "title": "How-To — Direct to KB",
+      "active": true,
+      "actions": [
+        {
+          "field": "comment_value",
+          "value": "Hi {{ticket.requester.first_name}},\n\nGreat question! Our Help Centre has a step-by-step guide for exactly this:\n\n→ {{help_article_url}}\n\nIf the guide doesn't fully answer your question, just reply here with the specific step where you get stuck and I'll walk you through it directly.\n\nBest,\n{{current_user.first_name}}\nSupport Team"
+        },
+        { "field": "status", "value": "pending" },
+        { "field": "tags", "value": "kb_deflect how_to" }
+      ]
+    },
+    {
+      "title": "Billing — Escalate to Billing Team",
+      "active": true,
+      "actions": [
+        {
+          "field": "comment_value",
+          "value": "Hi {{ticket.requester.first_name}},\n\nThank you for flagging this. I've passed your ticket to our billing team who handles all payment and invoice queries directly.\n\nThey'll be in touch within 4 business hours. If this is urgent, you can also email billing@{{company_domain}} directly with your account email and a brief description.\n\nApologies for any inconvenience.\n\n{{current_user.first_name}}\nSupport Team"
+        },
+        { "field": "group_id", "value": "BILLING_GROUP_ID" },
+        { "field": "status", "value": "open" },
+        { "field": "tags", "value": "billing escalated" }
+      ]
+    },
+    {
+      "title": "Technical — Escalate to Tier 2",
+      "active": true,
+      "actions": [
+        {
+          "field": "comment_value",
+          "value": "Hi {{ticket.requester.first_name}},\n\nI've reviewed the details you've shared and I'm looping in one of our technical specialists who can investigate this more deeply.\n\nYou'll hear back from them within 4 hours. In the meantime, if you have any additional information — error screenshots, steps to reproduce, or a screen recording — please reply here and it'll be added to your ticket.\n\nSorry for the disruption.\n\n{{current_user.first_name}}\nSupport Team"
+        },
+        { "field": "group_id", "value": "TIER_2_TECHNICAL_GROUP_ID" },
+        { "field": "status", "value": "open" },
+        { "field": "tags", "value": "technical escalated tier2" }
+      ]
+    },
+    {
+      "title": "Feature Request — Acknowledge & Route",
+      "active": true,
+      "actions": [
+        {
+          "field": "comment_value",
+          "value": "Hi {{ticket.requester.first_name}},\n\nThank you for taking the time to share this — feedback like yours directly shapes our product roadmap.\n\nI've logged this as a feature request with our product team. While I can't make any promises about timelines, I've made sure your suggestion is clearly documented.\n\nIf we ship something that addresses this, we'll reach out to let you know.\n\nThanks again,\n{{current_user.first_name}}\nSupport Team"
+        },
+        { "field": "group_id", "value": "PRODUCT_FEEDBACK_GROUP_ID" },
+        { "field": "status", "value": "solved" },
+        { "field": "tags", "value": "feature_request product_feedback" }
+      ]
+    },
+    {
+      "title": "Closing — Resolved, Pending Confirmation",
+      "active": true,
+      "actions": [
+        {
+          "field": "comment_value",
+          "value": "Hi {{ticket.requester.first_name}},\n\nJust checking in — were you able to get this resolved?\n\nIf everything is working as expected, I'll close this ticket in the next 24 hours. If you're still having trouble, just reply here and I'll pick it back up right away.\n\nThanks,\n{{current_user.first_name}}\nSupport Team"
+        },
+        { "field": "status", "value": "pending" }
+      ]
+    },
+    {
+      "title": "Security Alert — Escalate Immediately",
+      "active": true,
+      "actions": [
+        {
+          "field": "comment_value",
+          "value": "Hi {{ticket.requester.first_name}},\n\nThank you for alerting us to this. We take security concerns extremely seriously.\n\nI've immediately escalated this to our security team. As a precaution, I recommend:\n1. Changing your password right now at {{app_login_url}}/reset\n2. Enabling two-factor authentication if not already active\n3. Reviewing your account's recent activity log\n\nOur team will be in touch within 30 minutes. If you believe an active breach is occurring, please email security@{{company_domain}} directly.\n\n{{current_user.first_name}}\nSupport Team"
+        },
+        { "field": "priority", "value": "urgent" },
+        { "field": "tags", "value": "security escalated urgent" }
+      ]
+    }
+  ]
+}
